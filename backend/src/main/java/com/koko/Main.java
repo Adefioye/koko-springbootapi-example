@@ -39,7 +39,6 @@ public class Main {
                    "%s.%s@example.com".formatted(firstName.toLowerCase(), lastName.toLowerCase( )),
                    random.nextInt(16, 99)
                    );
-
            customerRepository.save(customer);
         };
 
