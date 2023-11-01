@@ -1,6 +1,6 @@
 services:
   database:
-    image: postgres
+    image: postgres:15.4
     ports:
       - 5433:5432
     volumes:
