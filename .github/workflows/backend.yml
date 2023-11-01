@@ -1,10 +1,9 @@
-name: CI
+name: CI - Build Backend
 
 on:
-  workflow_dispatch:
-
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
     paths:
       - backend/**
 
@@ -25,15 +24,16 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     defaults:
       run:
         working-directory: ./backend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
+          distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
-      - name: Build and run Unit/Integration tests with Maven
+      - name: Build and run Unit/Integration Tests with Maven
         run: mvn -ntp -B verify
