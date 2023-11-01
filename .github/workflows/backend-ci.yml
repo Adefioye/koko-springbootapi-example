@@ -1,11 +1,11 @@
 name: CI - Build backend
 
-
 on:
   pull_request:
     branches:
       - main
       - testing-ci-workflow
+      - test-ci-workflow
     paths:
       - backend/**
 
