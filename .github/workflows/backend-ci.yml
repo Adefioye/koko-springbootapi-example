@@ -3,7 +3,7 @@ name: CI - Build backend
 on:
   pull_request:
     branches:
-      - main
+      - ['main', 'testing-ci-workflow']
     paths:
       - backend/**
 
