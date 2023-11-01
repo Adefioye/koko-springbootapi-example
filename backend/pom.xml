@@ -186,6 +186,10 @@
 					</from>
 					<to>
 						<image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+						<auth>
+							<username>${env.REGISTRY_USERNAME}</username>
+							<password>${env.REGISTRY_PASSWORD}</password>
+						</auth>
 						<tags>
 							<tag>latest</tag>
 						</tags>
