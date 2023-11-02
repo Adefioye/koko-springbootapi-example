@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "koko-api",
-      "image": "kokoaiye/koko-api:latest",
+      "image": "kokoaiye/koko-api:02.11.2023.19.14.38",
       "essential": true,
       "memory": 512 ,
       "portMappings": [
