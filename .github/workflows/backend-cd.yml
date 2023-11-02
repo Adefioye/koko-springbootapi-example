@@ -29,7 +29,8 @@ jobs:
 
     defaults:
       run:
-        working_directory: ./backend
+        working-directory: ./backend
+
     steps:
       - name: Checkout entire backend directory into Linux runner
         uses: actions/checkout@v3
