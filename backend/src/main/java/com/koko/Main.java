@@ -21,7 +21,6 @@ public class Main {
 //            System.out.println(beanDefinitionName);
 //        }
 
-
     }
 
     @Bean
@@ -62,3 +61,5 @@ public class Main {
 //            Person person
 //    ) {}
 }
+
+
