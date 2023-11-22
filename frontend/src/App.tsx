@@ -14,7 +14,7 @@ function App() {
     setIsLoading(true);
     try {
       const results = await getCustomers();
-      console.log(results);
+      setCustomers(results.data)
     } catch (err) {
       console.log(err);
     }
