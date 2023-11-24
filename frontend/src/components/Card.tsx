@@ -6,6 +6,8 @@ interface Props {
 }
 
 const Card = ({ customer }: Props) => {
+  const randomUserGenerator = customer.gender === "MALE" ? "men" : "women";
+
   return (
     <div className="flex flex-col max-w-sm items-center p-2 border border-white rounded-xl">
       <img
@@ -14,14 +16,16 @@ const Card = ({ customer }: Props) => {
         className="h-[5rem] w-[15rem] object-fit"
       />
       <Avatar className="-mt-4 border-4 border-white">
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage
+          src={`https://randomuser.me/api/portraits/thumb/${randomUserGenerator}/${customer.id}.jpg`}
+        />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className="flex w-[15rem] flex-col mt-2 space-y-3 items-center break-all">
         <p>{customer.id}</p>
         <p>{customer.name}</p>
         <p>{customer.email}</p>
-        <p>{customer.age}</p>
+        <p>{customer.age} | {customer.gender}</p>
       </div>
     </div>
   );
