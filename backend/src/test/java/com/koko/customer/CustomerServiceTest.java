@@ -27,6 +27,7 @@ class CustomerServiceTest {
     void setUp() {
         AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new CustomerService(customerDao);
+
     }
 
     @Test
@@ -41,7 +42,9 @@ class CustomerServiceTest {
     void canGetCustomerById() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 60);
+        int age = 60;
+        Gender gender = ((age % 2) == 0) ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         Customer actual = underTest.getCustomerById(id);
@@ -66,10 +69,13 @@ class CustomerServiceTest {
         // Given
         String email = "koko@example.com";
         when(customerDao.existsCustomerEmail(email)).thenReturn(false);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 "koko",
                 email,
-                19
+                age,
+                gender
         );
         // When
         underTest.addCustomer(request);
@@ -90,11 +96,14 @@ class CustomerServiceTest {
         // Given
         String email = "koko@example.com";
         when(customerDao.existsCustomerEmail(email)).thenReturn(true);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
         // When
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 "koko",
                 email,
-                19
+                age,
+                gender
         );
         assertThatThrownBy(() -> underTest.addCustomer(request))
                 .isInstanceOf(DuplicateResourceException.class)
@@ -132,13 +141,16 @@ class CustomerServiceTest {
     void canUpdateAllCustomerProperties() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 "kokoaiye",
                 "kokoaiye@example.com",
-                56
+                56,
+                gender
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(false);
         underTest.updateCustomer(id, updateRequest);
@@ -157,13 +169,16 @@ class CustomerServiceTest {
     void canUpdateCustomerName() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 "kokoaiye",
                 null,
-                null
+                null,
+                gender
         );
         underTest.updateCustomer(id, updateRequest);
         // Then
@@ -181,13 +196,16 @@ class CustomerServiceTest {
     void canUpdateCustomerEmail() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 "kokoaiye@example.com",
-                null
+                null,
+                gender
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(false);
         underTest.updateCustomer(id, updateRequest);
@@ -206,13 +224,16 @@ class CustomerServiceTest {
     void canUpdateCustomerAge() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", 23, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 null,
-                43
+                43,
+                gender
         );
         underTest.updateCustomer(id, updateRequest);
         // Then
@@ -230,13 +251,16 @@ class CustomerServiceTest {
     void willThrowIfEmailAlreadyExistsWhenUpdatingCustomer() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 "kokoaiye@example.com",
-                null
+                null,
+                gender
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(true);
         assertThatThrownBy(() -> underTest.updateCustomer(id, updateRequest))
@@ -250,13 +274,16 @@ class CustomerServiceTest {
     void willThrowIfNoPropertyIsGivenWhenUpdatingCustomer() {
         // Given
         int id = 1;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23);
+        int age = 19;
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 null,
-                null
+                null,
+                gender
         );
         assertThatThrownBy(() -> underTest.updateCustomer(id, updateRequest))
                 .isInstanceOf(DuplicateResourceException.class)

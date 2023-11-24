@@ -3,6 +3,7 @@ package com.koko;
 import com.github.javafaker.Faker;
 import com.koko.customer.Customer;
 import com.koko.customer.CustomerRepository;
+import com.koko.customer.Gender;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,10 +32,14 @@ public class Main {
            String firstName = faker.name().firstName();
            String lastName = faker.name().lastName();
            Random random = new Random();
+           int age = random.nextInt(16, 99);
+           Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
            Customer customer = new Customer(
                    "%s %s".formatted(firstName, lastName),
                    "%s.%s@example.com".formatted(firstName.toLowerCase(), lastName.toLowerCase( )),
-                   random.nextInt(16, 99)
+                    age,
+                   gender
                    );
            customerRepository.save(customer);
         };

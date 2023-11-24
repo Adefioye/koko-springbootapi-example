@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import com.koko.customer.Customer;
 import com.koko.customer.CustomerRegistrationRequest;
+import com.koko.customer.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -37,9 +37,10 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
         int age = RANDOM.nextInt(1, 100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-             name, email, age
+             name, email, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -61,7 +62,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age);
+        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -94,9 +95,10 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
         int age = RANDOM.nextInt(1, 100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-                name, email, age
+                name, email, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -118,7 +120,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age);
+        Customer expectedCustomer = new Customer(name, email, age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -153,9 +155,10 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
         int age = RANDOM.nextInt(1, 100);
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-                name, email, age
+                name, email, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -177,7 +180,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomerRequest = new Customer(name, email, age);
+        Customer expectedCustomerRequest = new Customer(name, email, age, Gender.MALE);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomerRequest);
@@ -192,7 +195,7 @@ public class CustomerIntegrationTest {
 
         // Make update to the customer with the id
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
-                "koko", null, null
+                "koko", null, null, gender
         );
 
         // Send a PUT call to make update
@@ -215,8 +218,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedUpdatedCustomer = new Customer(
-                id, updateRequest.name(), email, age
-        );
+                id, updateRequest.name(), email, age, gender);
 
         assertThat(actualUpdatedCustomer).isEqualTo(expectedUpdatedCustomer);
     }
