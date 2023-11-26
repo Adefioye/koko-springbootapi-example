@@ -147,7 +147,12 @@ const CustomerForm = ({ open, setOpen }: Props) => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Save customer</Button>
+            <Button
+              type="submit"
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
+            >
+              Save customer
+            </Button>
           </form>
         </Form>
       </SheetContent>
