@@ -11,6 +11,7 @@ import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useNavigate } from "react-router-dom";
 
 import {
   FormField,
@@ -45,6 +46,7 @@ const formSchema = z.object({
 });
 
 const CustomerForm = ({ open, setOpen }: Props) => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,6 +60,8 @@ const CustomerForm = ({ open, setOpen }: Props) => {
     // Do something with the form values.
     try {
       const res = await saveCustomer(values);
+      // To reload the page
+      navigate(0);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -69,9 +73,9 @@ const CustomerForm = ({ open, setOpen }: Props) => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle>Add customer</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            Create a customer here and save it to the database.
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
@@ -150,6 +154,7 @@ const CustomerForm = ({ open, setOpen }: Props) => {
             <Button
               type="submit"
               disabled={!form.formState.isValid || form.formState.isSubmitting}
+              onClick={() => setOpen(false)}
             >
               Save customer
             </Button>
