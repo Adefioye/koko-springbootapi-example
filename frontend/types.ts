@@ -1,7 +1,7 @@
 export interface CustomerProps {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   age: number;
-  gender: string
+  gender: string;
 }

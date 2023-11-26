@@ -4,17 +4,21 @@ import ImageGallery from "./components/ImageGallery";
 import { useEffect, useState } from "react";
 import { CustomerProps } from "./../types";
 import { getCustomers } from "./services/clients";
+import CustomerForm from "./components/CustomerForm";
+import AddCustomerButton from "./components/AddCustomerButton";
 
 function App() {
   const [customers, setCustomers] = useState<CustomerProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [openCustomerForm, setOpenCustomerForm] = useState(false);
   // const [isError, setIsError] = useState(false);
+
 
   async function fetchCustomers() {
     setIsLoading(true);
     try {
       const results = await getCustomers();
-      setCustomers(results.data)
+      setCustomers(results.data);
     } catch (err) {
       console.log(err);
     }
@@ -29,7 +33,7 @@ function App() {
   }
 
   if (customers.length === 0) {
-    return <div>No customers...</div>
+    return <div>No customers...</div>;
   }
 
   return (
@@ -38,6 +42,12 @@ function App() {
       <Navbar />
       {/* Left side bar */}
       <LeftSideBar />
+      {/* Button to add customer */}
+      <AddCustomerButton open={openCustomerForm} setOpen={setOpenCustomerForm} />
+
+      {/* Customer Form */}
+      <CustomerForm open={openCustomerForm} setOpen={setOpenCustomerForm} />
+
       {/* Image gallery */}
       <ImageGallery customers={customers} />
     </div>
