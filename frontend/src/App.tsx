@@ -1,18 +1,14 @@
-import Navbar from "./components/shared/Navbar";
-import LeftSideBar from "./components/shared/LeftSideBar";
 import ImageGallery from "./components/ImageGallery";
 import { useEffect, useState } from "react";
 import { CustomerProps } from "./../types";
 import { getCustomers } from "./services/clients";
-import CustomerForm from "./components/CustomerForm";
-import AddCustomerButton from "./components/AddCustomerButton";
+import SideBarAndNavbar from "./components/shared/SideBarAndNavbar";
 
 function App() {
   const [customers, setCustomers] = useState<CustomerProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openCustomerForm, setOpenCustomerForm] = useState(false);
   // const [isError, setIsError] = useState(false);
-
 
   async function fetchCustomers() {
     setIsLoading(true);
@@ -29,28 +25,26 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <SideBarAndNavbar open={openCustomerForm} setOpen={setOpenCustomerForm} fetchCustomers={fetchCustomers}>
+        <p>Loading...</p>
+      </SideBarAndNavbar>
+    );
   }
 
   if (customers.length === 0) {
-    return <div>No customers...</div>;
+    return (
+      <SideBarAndNavbar open={openCustomerForm} setOpen={setOpenCustomerForm} fetchCustomers={fetchCustomers}>
+        <p>No customers</p>
+      </SideBarAndNavbar>
+    );
   }
 
   return (
-    <div className="relative flex flex-col min-h-screen text-white bg-slate-600 overflow-y-auto">
-      {/* Navbar */}
-      <Navbar />
-      {/* Left side bar */}
-      <LeftSideBar />
-      {/* Button to add customer */}
-      <AddCustomerButton open={openCustomerForm} setOpen={setOpenCustomerForm} />
-
-      {/* Customer Form */}
-      <CustomerForm open={openCustomerForm} setOpen={setOpenCustomerForm} />
-
+    <SideBarAndNavbar open={openCustomerForm} setOpen={setOpenCustomerForm} fetchCustomers={fetchCustomers}>
       {/* Image gallery */}
       <ImageGallery customers={customers} />
-    </div>
+    </SideBarAndNavbar>
   );
 }
 

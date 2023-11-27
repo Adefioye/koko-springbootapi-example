@@ -11,7 +11,6 @@ import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useNavigate } from "react-router-dom";
 
 import {
   FormField,
@@ -30,10 +29,12 @@ import {
   SelectContent,
 } from "./ui/select";
 import { saveCustomer } from "@/services/clients";
+import { useEffect } from "react";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchCustomers: () => void;
 }
 
 const genderType = ["MALE", "FEMALE"] as const;
@@ -45,9 +46,9 @@ const formSchema = z.object({
   gender: z.enum(genderType),
 });
 
-const CustomerForm = ({ open, setOpen }: Props) => {
-  const navigate = useNavigate();
+const CustomerForm = ({ open, setOpen, fetchCustomers }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
+    mode: "onBlur",
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -61,13 +62,17 @@ const CustomerForm = ({ open, setOpen }: Props) => {
     try {
       const res = await saveCustomer(values);
       // To reload the page
-      navigate(0);
+      fetchCustomers();
       return res.data;
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
+
+  useEffect(() => {
+    form.reset();
+  }, [form, form.formState.isSubmitted]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
