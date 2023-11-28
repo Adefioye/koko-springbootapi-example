@@ -63,7 +63,7 @@ const CustomerForm = ({ open, setOpen, fetchCustomers }: Props) => {
     // Do something with the form values.
     try {
       const res = await saveCustomer(values);
-      // To reload the page
+      // To make page updated with new customer data
       fetchCustomers();
       toast({
         title: `Success: Customer saved`,
