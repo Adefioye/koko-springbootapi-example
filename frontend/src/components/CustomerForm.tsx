@@ -11,6 +11,7 @@ import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { AxiosError } from "axios";
 
 import {
   FormField,
@@ -30,6 +31,7 @@ import {
 } from "./ui/select";
 import { saveCustomer } from "@/services/clients";
 import { useEffect } from "react";
+import { toast } from "@/components/ui/use-toast";
 
 interface Props {
   open: boolean;
@@ -63,10 +65,19 @@ const CustomerForm = ({ open, setOpen, fetchCustomers }: Props) => {
       const res = await saveCustomer(values);
       // To reload the page
       fetchCustomers();
+      toast({
+        title: `Success: Customer saved`,
+        description: "Customer succesfully saved in the database",
+      });
       return res.data;
     } catch (error) {
-      console.log(error);
-      throw error;
+      if (error instanceof AxiosError) {
+        toast({
+          variant: "destructive",
+          title: `${error.code}`,
+          description: `${error.response?.data?.message}`,
+        });
+      }
     }
   }
 
