@@ -28,3 +28,14 @@ export async function saveCustomer(data: CustomerProps) {
     throw error;
   }
 }
+
+export async function deleteCustomer(customerId: number) {
+  try {
+    return await axios.delete(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customerId}`
+    );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

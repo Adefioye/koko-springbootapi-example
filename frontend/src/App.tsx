@@ -26,8 +26,8 @@ function App() {
           description: `${error.response?.data?.message}`,
         });
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }
   useEffect(() => {
     fetchCustomers();
@@ -76,7 +76,7 @@ function App() {
       fetchCustomers={fetchCustomers}
     >
       {/* Image gallery */}
-      <ImageGallery customers={customers} />
+      <ImageGallery customers={customers} fetchCustomers={fetchCustomers} />
     </SideBarAndNavbar>
   );
 }
