@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CustomerProps } from "types";
+import { CustomerProps } from "../../types";
 import { Button } from "./ui/button";
 import DeleteCustomerDialog from "./DeleteCustomerDialog";
 import { useState } from "react";
@@ -7,12 +7,27 @@ import { useState } from "react";
 interface Props {
   customer: CustomerProps;
   fetchCustomers: () => void;
+  setUpdateCustomer: React.Dispatch<
+    React.SetStateAction<CustomerProps | undefined>
+  >;
+  setOpenCustomerForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Card = ({ customer, fetchCustomers }: Props) => {
+const Card = ({
+  customer,
+  fetchCustomers,
+  setUpdateCustomer,
+  setOpenCustomerForm,
+}: Props) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const randomUserGenerator = customer.gender === "MALE" ? "men" : "women";
+
+  function handleCustomerUpdate(customer: CustomerProps): void {
+    // Set local customer state and populate form with that information
+    setUpdateCustomer(customer);
+    setOpenCustomerForm(true);
+  }
 
   return (
     <div className="flex flex-col max-w-sm items-center border border-white rounded-xl">
@@ -35,7 +50,7 @@ const Card = ({ customer, fetchCustomers }: Props) => {
           {customer.age} | {customer.gender}
         </p>
         <div className="flex space-x-8">
-          <Button>Update</Button>
+          <Button onClick={() => handleCustomerUpdate(customer)}>Update</Button>
           <Button variant="destructive" onClick={() => setOpenDialog(true)}>
             Delete
           </Button>
@@ -44,8 +59,7 @@ const Card = ({ customer, fetchCustomers }: Props) => {
         <DeleteCustomerDialog
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
-          customerName={customer.name!}
-          customerId={customer.id!}
+          customer={customer}
           fetchCustomers={fetchCustomers}
         />
       </div>

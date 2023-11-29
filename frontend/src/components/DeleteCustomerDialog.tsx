@@ -11,20 +11,19 @@ import { Button } from "./ui/button";
 import { deleteCustomer } from "@/services/clients";
 import { AxiosError } from "axios";
 import { toast } from "./ui/use-toast";
+import { CustomerProps } from "@/types";
 
 interface Props {
   openDialog: boolean;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  customerName: string;
-  customerId: number;
+  customer: CustomerProps;
   fetchCustomers: () => void;
 }
 
 const DeleteCustomerDialog = ({
   openDialog,
   setOpenDialog,
-  customerName,
-  customerId,
+  customer,
   fetchCustomers,
 }: Props) => {
   async function handleDeleteCustomer(id: number) {
@@ -51,7 +50,7 @@ const DeleteCustomerDialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Do you really want to delete {customerName}?
+            Do you really want to delete {customer.name!}?
           </DialogTitle>
           <DialogDescription>
             This action cannot be undone. This will permanently delete customer
@@ -63,7 +62,7 @@ const DeleteCustomerDialog = ({
             <Button
               type="button"
               variant="destructive"
-              onClick={() => handleDeleteCustomer(customerId)}
+              onClick={() => handleDeleteCustomer(customer.id!)}
             >
               Delete
             </Button>

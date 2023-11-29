@@ -32,31 +32,42 @@ import {
 import { saveCustomer } from "@/services/clients";
 import { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { CustomerProps, genderProps } from "../../types";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   fetchCustomers: () => void;
+  updateCustomer: CustomerProps | undefined;
 }
-
-const genderType = ["MALE", "FEMALE"] as const;
 
 const formSchema = z.object({
   name: z.string().min(5).max(30),
   email: z.string().email(),
   age: z.coerce.number().min(16).max(100),
-  gender: z.enum(genderType),
+  gender: z.nativeEnum(genderProps),
 });
 
-const CustomerForm = ({ open, setOpen, fetchCustomers }: Props) => {
+const CustomerForm = ({
+  open,
+  setOpen,
+  fetchCustomers,
+  updateCustomer,
+}: Props) => {
+  console.log("Update customer: ", updateCustomer);
+
+  const initialFormValues = {
+    name: updateCustomer?.name ?? "",
+    email: updateCustomer?.email ?? "",
+    age: updateCustomer?.age ?? 5,
+    gender: (updateCustomer?.gender as genderProps) ?? genderProps.MALE,
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "onBlur",
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      age: 5,
-    },
+    defaultValues: initialFormValues,
+    values: initialFormValues,
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -89,9 +100,12 @@ const CustomerForm = ({ open, setOpen, fetchCustomers }: Props) => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Add customer</SheetTitle>
+          <SheetTitle>
+            {updateCustomer === undefined ? "Add" : "Edit"} customer
+          </SheetTitle>
           <SheetDescription>
-            Create a customer here and save it to the database.
+            {updateCustomer === undefined ? "Add" : "Edit"} a customer here and
+            save it to the database.
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>

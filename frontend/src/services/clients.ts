@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CustomerProps } from "types";
+import { CustomerProps } from "@/types";
 
 export async function getCustomers() {
   try {
@@ -16,6 +16,23 @@ export async function saveCustomer(data: CustomerProps) {
   try {
     return await axios.post(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function updateCustomer(customerId: number, data: CustomerProps) {
+  try {
+    return await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customerId}`,
       data,
       {
         headers: {

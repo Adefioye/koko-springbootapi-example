@@ -10,6 +10,9 @@ function App() {
   const [customers, setCustomers] = useState<CustomerProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openCustomerForm, setOpenCustomerForm] = useState(false);
+  const [updateCustomer, setUpdateCustomer] = useState<
+    CustomerProps | undefined
+  >(undefined);
   const [error, setError] = useState("");
 
   async function fetchCustomers() {
@@ -39,6 +42,8 @@ function App() {
         open={openCustomerForm}
         setOpen={setOpenCustomerForm}
         fetchCustomers={fetchCustomers}
+        updateCustomer={updateCustomer}
+        setUpdateCustomer={setUpdateCustomer}
       >
         <p>Loading...</p>
       </SideBarAndNavbar>
@@ -51,6 +56,8 @@ function App() {
         open={openCustomerForm}
         setOpen={setOpenCustomerForm}
         fetchCustomers={fetchCustomers}
+        updateCustomer={updateCustomer}
+        setUpdateCustomer={setUpdateCustomer}
       >
         <p>Ooops error occured...</p>
       </SideBarAndNavbar>
@@ -63,6 +70,8 @@ function App() {
         open={openCustomerForm}
         setOpen={setOpenCustomerForm}
         fetchCustomers={fetchCustomers}
+        updateCustomer={updateCustomer}
+        setUpdateCustomer={setUpdateCustomer}
       >
         <p>No customers</p>
       </SideBarAndNavbar>
@@ -74,9 +83,16 @@ function App() {
       open={openCustomerForm}
       setOpen={setOpenCustomerForm}
       fetchCustomers={fetchCustomers}
+      updateCustomer={updateCustomer}
+      setUpdateCustomer={setUpdateCustomer}
     >
       {/* Image gallery */}
-      <ImageGallery customers={customers} fetchCustomers={fetchCustomers} />
+      <ImageGallery
+        customers={customers}
+        fetchCustomers={fetchCustomers}
+        setUpdateCustomer={setUpdateCustomer}
+        setOpenCustomerForm={setOpenCustomerForm}
+      />
     </SideBarAndNavbar>
   );
 }

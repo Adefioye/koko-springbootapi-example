@@ -3,23 +3,44 @@ import LeftSideBar from "./LeftSideBar";
 import AddCustomerButton from "../AddCustomerButton";
 import { ReactNode } from "react";
 import CustomerForm from "../CustomerForm";
+import { CustomerProps } from "../../../types";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: ReactNode;
   fetchCustomers: () => void;
+  updateCustomer: CustomerProps | undefined;
+  setUpdateCustomer: React.Dispatch<
+    React.SetStateAction<CustomerProps | undefined>
+  >;
 }
 
-const SideBarAndNavbar = ({ open, setOpen, children, fetchCustomers }: Props) => {
+const SideBarAndNavbar = ({
+  open,
+  setOpen,
+  children,
+  fetchCustomers,
+  updateCustomer,
+  setUpdateCustomer,
+}: Props) => {
   return (
     <div className="relative flex flex-col min-h-screen text-white bg-slate-600 overflow-y-auto">
       <Navbar />
       <LeftSideBar />
       {/* Button to add customer */}
-      <AddCustomerButton open={open} setOpen={setOpen} />
+      <AddCustomerButton
+        open={open}
+        setOpen={setOpen}
+        setUpdateCustomer={setUpdateCustomer}
+      />
       {/* Customer Form */}
-      <CustomerForm open={open} setOpen={setOpen} fetchCustomers={fetchCustomers} />
+      <CustomerForm
+        open={open}
+        setOpen={setOpen}
+        fetchCustomers={fetchCustomers}
+        updateCustomer={updateCustomer}
+      />
       <div className="absolute top-24 left-[15rem] mt-10 ml-10 w[100vw - 15rem]">
         {children}
       </div>
