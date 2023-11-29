@@ -29,7 +29,10 @@ import {
   SelectItem,
   SelectContent,
 } from "./ui/select";
-import { saveCustomer } from "@/services/clients";
+import {
+  saveCustomer,
+  updateCustomer as updateCustomerDetails,
+} from "@/services/clients";
 import { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { CustomerProps, genderProps } from "../../types";
@@ -73,14 +76,24 @@ const CustomerForm = ({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     try {
-      const res = await saveCustomer(values);
-      // To make page updated with new customer data
-      fetchCustomers();
+      if (updateCustomer === undefined) {
+        await saveCustomer(values);
+        // To make page updated with new customer data
+        fetchCustomers();
+      } else {
+        await updateCustomerDetails(updateCustomer.id!, values);
+        // To make page updated with new customer data
+        fetchCustomers();
+      }
+
       toast({
-        title: `Success: Customer saved`,
-        description: "Customer succesfully saved in the database",
+        title: `Success: Customer ${
+          updateCustomer !== undefined ? "updated" : "saved"
+        }`,
+        description: `Customer succesfully ${
+          updateCustomer !== undefined ? "updated" : "saved"
+        } in the database`,
       });
-      return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -183,7 +196,10 @@ const CustomerForm = ({
             />
             <Button
               type="submit"
-              disabled={!form.formState.isValid || form.formState.isSubmitting}
+              disabled={
+                !(form.formState.isValid && form.formState.isDirty) ||
+                form.formState.isSubmitting
+              }
               onClick={() => setOpen(false)}
             >
               Save customer

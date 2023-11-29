@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CustomerProps } from "@/types";
+import { CustomerProps } from "../../types";
 
 export async function getCustomers() {
   try {

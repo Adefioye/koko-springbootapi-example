@@ -23,7 +23,7 @@
 		<java.version>17</java.version>
 		<docker.username>kokoaiye</docker.username>
 		<docker.image.name>koko-api</docker.image.name>
-		<docker.image.tag/>
+		<docker.image.tag>1.0-SNAPSHOT</docker.image.tag>
 	</properties>
 
 	<dependencies>

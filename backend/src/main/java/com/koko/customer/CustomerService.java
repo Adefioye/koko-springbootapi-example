@@ -67,6 +67,12 @@ public class CustomerService {
             hasCustomerChanged = true;
         }
 
+        // Check if gender has changed
+        if (customerUpdateRequest.gender() != null && !customer.getGender().equals(customerUpdateRequest.gender())) {
+            customer.setGender(customerUpdateRequest.gender());
+            hasCustomerChanged = true;
+        }
+
         // Check if email has changed
         if (customerUpdateRequest.email() != null && !customer.getEmail().equals(customerUpdateRequest.email())) {
             if (customerDao.existsCustomerEmail(customerUpdateRequest.email())) {

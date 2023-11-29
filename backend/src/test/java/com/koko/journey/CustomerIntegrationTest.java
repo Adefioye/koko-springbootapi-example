@@ -62,7 +62,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
+        Customer expectedCustomer = new Customer(name, email, age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -180,7 +180,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomerRequest = new Customer(name, email, age, Gender.MALE);
+        Customer expectedCustomerRequest = new Customer(name, email, age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomerRequest);
