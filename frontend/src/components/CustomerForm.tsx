@@ -70,7 +70,7 @@ const CustomerForm = ({
     mode: "onBlur",
     resolver: zodResolver(formSchema),
     defaultValues: initialFormValues,
-    values: initialFormValues,
+    values: initialFormValues, // This react to change initialFormValues when updateCustomer prop change
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
