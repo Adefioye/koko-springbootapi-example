@@ -22,7 +22,7 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         String name = FAKER.name().fullName();
-        Customer customer = new Customer(name, email, 45, Gender.MALE);
+        Customer customer = new Customer(name, email, "password", Gender.MALE, 45);
 
         underTest.save(customer);
         // When
@@ -46,7 +46,7 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         String name = FAKER.name().fullName();
-        Customer customer = new Customer(name, email, 45, Gender.MALE);
+        Customer customer = new Customer(name, email, "password", Gender.MALE, 45);
 
         underTest.save(customer);
         // When

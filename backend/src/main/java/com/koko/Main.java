@@ -38,9 +38,8 @@ public class Main {
            Customer customer = new Customer(
                    "%s %s".formatted(firstName, lastName),
                    "%s.%s@example.com".formatted(firstName.toLowerCase(), lastName.toLowerCase( )),
-                    age,
-                   gender
-                   );
+                   "password", gender, age
+           );
            customerRepository.save(customer);
         };
 

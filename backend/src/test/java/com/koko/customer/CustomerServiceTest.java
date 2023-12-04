@@ -44,7 +44,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 60;
         Gender gender = ((age % 2) == 0) ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         Customer actual = underTest.getCustomerById(id);
@@ -143,7 +143,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
@@ -171,7 +171,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
@@ -198,7 +198,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
@@ -226,7 +226,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", 23, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, 23);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
@@ -253,7 +253,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
@@ -276,7 +276,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", age, gender);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(

@@ -13,12 +13,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -62,7 +63,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age, gender);
+        Customer expectedCustomer = new Customer(name, email, "password", gender, age);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -120,7 +121,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, age, gender);
+        Customer expectedCustomer = new Customer(name, email, "password", gender, age);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -180,7 +181,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomerRequest = new Customer(name, email, age, gender);
+        Customer expectedCustomerRequest = new Customer(name, email, "password", gender, age);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomerRequest);
@@ -218,7 +219,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedUpdatedCustomer = new Customer(
-                id, updateRequest.name(), email, age, gender);
+                id, updateRequest.name(), email, "password", gender, age);
 
         assertThat(actualUpdatedCustomer).isEqualTo(expectedUpdatedCustomer);
     }
