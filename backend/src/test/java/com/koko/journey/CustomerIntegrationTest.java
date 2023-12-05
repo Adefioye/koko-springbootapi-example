@@ -39,9 +39,10 @@ public class CustomerIntegrationTest {
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
         int age = RANDOM.nextInt(1, 100);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-             name, email, age, gender
+             name, email, hashPassword, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -51,7 +52,7 @@ public class CustomerIntegrationTest {
                 .body(Mono.just(customerRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isCreated();
 
         // Get all customers
         List<Customer> allCustomers = webTestClient.get()
@@ -63,7 +64,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, "password", gender, age);
+        Customer expectedCustomer = new Customer(name, email, "password", age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -95,11 +96,12 @@ public class CustomerIntegrationTest {
         Name fakerName = FAKER.name();
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         int age = RANDOM.nextInt(1, 100);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-                name, email, age, gender
+                name, email, hashPassword, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -109,7 +111,7 @@ public class CustomerIntegrationTest {
                 .body(Mono.just(customerRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isCreated();
 
         // Get all customers
         List<Customer> allCustomers = webTestClient.get()
@@ -121,7 +123,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomer = new Customer(name, email, "password", gender, age);
+        Customer expectedCustomer = new Customer(name, email, "password", age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -155,11 +157,12 @@ public class CustomerIntegrationTest {
         Name fakerName = FAKER.name();
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         int age = RANDOM.nextInt(1, 100);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
-                name, email, age, gender
+                name, email, hashPassword, age, gender
         );
         // Send a POST request
         webTestClient.post()
@@ -169,7 +172,7 @@ public class CustomerIntegrationTest {
                 .body(Mono.just(customerRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isCreated();
 
         // Get all customers
         List<Customer> allCustomers = webTestClient.get()
@@ -181,7 +184,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedCustomerRequest = new Customer(name, email, "password", gender, age);
+        Customer expectedCustomerRequest = new Customer(name, email, "password", age, gender);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomerRequest);
@@ -196,7 +199,7 @@ public class CustomerIntegrationTest {
 
         // Make update to the customer with the id
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
-                "koko", null, null, gender
+                "koko", null, "password", null, gender
         );
 
         // Send a PUT call to make update
@@ -219,7 +222,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedUpdatedCustomer = new Customer(
-                id, updateRequest.name(), email, "password", gender, age);
+                id, updateRequest.name(), email, "password", age, gender);
 
         assertThat(actualUpdatedCustomer).isEqualTo(expectedUpdatedCustomer);
     }

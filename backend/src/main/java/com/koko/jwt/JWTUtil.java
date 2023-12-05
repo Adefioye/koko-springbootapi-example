@@ -3,7 +3,7 @@ package com.koko.jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.sql.Date;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@Service
+@Component
 public class JWTUtil {
 
     private static final String SECRET_KEY = "mySecretKeymySecretKeymySecretKeymySecretKey";

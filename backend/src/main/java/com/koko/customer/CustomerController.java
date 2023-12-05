@@ -2,6 +2,7 @@ package com.koko.customer;
 
 import com.koko.jwt.JWTUtil;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,7 @@ public class CustomerController {
     public ResponseEntity<?> registerCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest) {
         customerService.addCustomer(customerRegistrationRequest);
         String jwtToken = this.jwtUtil.issueToken(customerRegistrationRequest.email(), "ROLE_USER");
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .build();
     }

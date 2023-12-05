@@ -8,7 +8,6 @@ logging:
     org:
       springframework:
         security: TRACE
-
 cors:
   allowed-origins: "*"
   allowed-methods: "*"

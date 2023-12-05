@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,12 +22,15 @@ import static org.mockito.Mockito.*;
 class CustomerServiceTest {
     
     private CustomerService underTest;
-    @Mock private CustomerDao customerDao;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
+    private CustomerDao customerDao;
 
     @BeforeEach
     void setUp() {
         AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new CustomerService(customerDao);
+        underTest = new CustomerService(customerDao, passwordEncoder);
 
     }
 
@@ -44,7 +48,7 @@ class CustomerServiceTest {
         int id = 1;
         int age = 60;
         Gender gender = ((age % 2) == 0) ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         Customer actual = underTest.getCustomerById(id);
@@ -68,15 +72,19 @@ class CustomerServiceTest {
     void canAddCustomer() {
         // Given
         String email = "koko@example.com";
-        when(customerDao.existsCustomerEmail(email)).thenReturn(false);
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
+        when(customerDao.existsCustomerEmail(email)).thenReturn(false);
+
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 "koko",
                 email,
+                "password",
                 age,
                 gender
         );
+        when(passwordEncoder.encode("password")).thenReturn(hashPassword);
         // When
         underTest.addCustomer(request);
         // Then
@@ -87,7 +95,9 @@ class CustomerServiceTest {
         assertThat(actual.getId()).isNull();
         assertThat(actual.getName()).isEqualTo(request.name());
         assertThat(actual.getEmail()).isEqualTo(request.email());
+        assertThat(actual.getPassword()).isEqualTo(hashPassword);
         assertThat(actual.getAge()).isEqualTo(request.age());
+        assertThat(actual.getGender()).isEqualTo(request.gender());
 
     }
 
@@ -95,6 +105,7 @@ class CustomerServiceTest {
     void willThrowIfEmailExistsWhenAddingCustomer() {
         // Given
         String email = "koko@example.com";
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         when(customerDao.existsCustomerEmail(email)).thenReturn(true);
         int age = 19;
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
@@ -102,6 +113,7 @@ class CustomerServiceTest {
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 "koko",
                 email,
+                hashPassword,
                 age,
                 gender
         );
@@ -142,15 +154,17 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 "kokoaiye",
                 "kokoaiye@example.com",
+                hashPassword,
                 56,
-                gender
+                Gender.MALE
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(false);
         underTest.updateCustomer(id, updateRequest);
@@ -170,13 +184,15 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 "kokoaiye",
                 null,
+                hashPassword,
                 null,
                 gender
         );
@@ -197,15 +213,17 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 "kokoaiye@example.com",
+                hashPassword,
                 null,
-                gender
+                Gender.MALE
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(false);
         underTest.updateCustomer(id, updateRequest);
@@ -225,15 +243,17 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, 23);
+        Customer customer = new Customer(id, "koko", "koko@example.com", hashPassword, 23, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 null,
+                "password",
                 43,
-                gender
+                Gender.MALE
         );
         underTest.updateCustomer(id, updateRequest);
         // Then
@@ -244,7 +264,10 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getId()).isEqualTo(id);
         assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
+        assertThat(capturedCustomer.getPassword()).isEqualTo(customer.getPassword());
         assertThat(capturedCustomer.getAge()).isEqualTo(updateRequest.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customer.getGender());
+
     }
 
     @Test
@@ -252,15 +275,17 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 "kokoaiye@example.com",
+                hashPassword,
                 null,
-                gender
+                Gender.MALE
         );
         when(customerDao.existsCustomerEmail(updateRequest.email())).thenReturn(true);
         assertThatThrownBy(() -> underTest.updateCustomer(id, updateRequest))
@@ -275,15 +300,17 @@ class CustomerServiceTest {
         // Given
         int id = 1;
         int age = 19;
+        String hashPassword = "AJKJBHAJKLIHGEFRT^D&*(093874r890-3ojebdvj";
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-        Customer customer = new Customer(id, "koko", "koko@example.com", "password", gender, age);
+        Customer customer = new Customer(id, "koko", "koko@example.com", "password", age, gender);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         // When
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 null,
                 null,
                 null,
-                gender
+                null,
+                null
         );
         assertThatThrownBy(() -> underTest.updateCustomer(id, updateRequest))
                 .isInstanceOf(DuplicateResourceException.class)

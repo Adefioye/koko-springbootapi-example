@@ -123,4 +123,18 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
 
         return count != null && count > 0 ;
     }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+
+        var sql = """
+                select id, name, email, password, age, gender
+                from customer
+                where email = ?
+                """;
+
+        return jdbcTemplate.query(sql, customerRowMapper, email)
+                .stream()
+                .findFirst();
+    }
 }

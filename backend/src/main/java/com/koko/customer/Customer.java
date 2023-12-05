@@ -63,7 +63,7 @@ public class Customer implements UserDetails {
     public Customer() {
     }
 
-    public Customer(Integer id, String name, String email, String password, Gender gender, Integer age) {
+    public Customer(Integer id, String name, String email, String password, Integer age, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -72,7 +72,7 @@ public class Customer implements UserDetails {
         this.gender = gender;
     }
 
-    public Customer(String name, String email, String password, Gender gender, Integer age) {
+    public Customer(String name, String email, String password, Integer age, Gender gender) {
         this.name = name;
         this.email = email;
         this.password = password;

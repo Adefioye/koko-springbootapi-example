@@ -32,7 +32,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                "password", Gender.MALE, 20
+                "password", 20, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -48,7 +48,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 20
+                "password", 20, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -86,7 +86,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 48
+                "password", 48, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -110,7 +110,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 67
+                "password", 67, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -145,7 +145,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 29
+                "password", 29, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -177,7 +177,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 67
+                "password", 67, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -211,7 +211,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 67
+                "password", 67, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -244,7 +244,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 67
+                "password", 67, Gender.MALE
         );
         // When
         underTest.insertCustomer(customer);
@@ -272,7 +272,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         String name = FAKER.name().fullName();
-        Customer customer = new Customer(name, email, "password", Gender.MALE, 45);
+        Customer customer = new Customer(name, email, "password", 45, Gender.MALE);
 
         underTest.insertCustomer(customer);
         // When
@@ -298,7 +298,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                FAKER.name().fullName(),
                email,
-                "password", Gender.MALE, 34
+                "password", 34, Gender.MALE
         );
         underTest.insertCustomer(customer);
         // When
@@ -331,7 +331,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", Gender.MALE, 20
+                "password", 20, Gender.MALE
         );
         underTest.insertCustomer(customer);
 

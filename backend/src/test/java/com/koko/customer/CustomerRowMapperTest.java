@@ -27,7 +27,7 @@ class CustomerRowMapperTest {
         // When
         Customer actualCustomer = underTest.mapRow(resultSet, rowNum);
         Customer expectedCustomer = new Customer(
-                rowNum, "koko", "koko@example.com", "password", Gender.MALE, 54
+                rowNum, "koko", "koko@example.com", "password", 54, Gender.MALE
         );
         // Then
         assertThat(actualCustomer).isEqualTo(expectedCustomer);
