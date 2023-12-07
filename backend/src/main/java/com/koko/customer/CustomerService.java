@@ -7,25 +7,35 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
 
     private final CustomerDao customerDao;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao, PasswordEncoder passwordEncoder) {
+    public CustomerService(PasswordEncoder passwordEncoder,
+                           CustomerDTOMapper customerDTOMapper,
+                           @Qualifier("jdbc") CustomerDao customerDao) {
         this.customerDao = customerDao;
+        this.customerDTOMapper = customerDTOMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerDao.selectAllCustomers();
+    public List<CustomerDTO> getAllCustomers() {
+        return customerDao
+                .selectAllCustomers()
+                .stream()
+                .map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer  getCustomerById(Integer id) {
+    public CustomerDTO  getCustomerById(Integer id) {
         return customerDao
                 .selectCustomerById(id)
+                .map(customerDTOMapper)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Customer with id [%s] not found!".formatted(id))
                 );
@@ -56,7 +66,12 @@ public class CustomerService {
 
     void updateCustomer(Integer id, CustomerRegistrationRequest customerUpdateRequest) {
 
-        Customer customer = getCustomerById(id);
+        Customer customer = customerDao
+                .selectCustomerById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "customer with id [%s] not found".formatted(id)
+                ));
+
 
         boolean hasCustomerChanged = false;
 
