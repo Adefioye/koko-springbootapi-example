@@ -109,6 +109,7 @@ public class CustomerIntegrationTest {
         Name fakerName = FAKER.name();
         String name = fakerName.fullName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@foofooobar.com";
+        String email2 = fakerName.lastName() + "-" + UUID.randomUUID() + "@koko.com";
         String password = "password";
         int age = RANDOM.nextInt(1, 100);
         Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
@@ -116,12 +117,31 @@ public class CustomerIntegrationTest {
         CustomerRegistrationRequest customerRequest = new CustomerRegistrationRequest(
                 name, email, password, age, gender
         );
-        // Send a POST request
-        String jwtToken = webTestClient.post()
+
+        CustomerRegistrationRequest customerRequest2 = new CustomerRegistrationRequest(
+                name, email2, password, age, gender
+        );
+
+        // create customer 1
+        webTestClient.post()
                 .uri(CUSTOM_URI)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(customerRequest), CustomerRegistrationRequest.class)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(HttpHeaders.AUTHORIZATION)
+                .get(0);
+
+        // Create customer 2 and extract token
+        String jwtToken = webTestClient.post()
+                .uri(CUSTOM_URI)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(customerRequest2), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isCreated()
@@ -141,7 +161,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        // Get customer by id
+        // Get id for customer 1
         Integer id = Objects.requireNonNull(allCustomers)
                 .stream()
                 .filter(c -> c.email().equals(email))
@@ -159,8 +179,8 @@ public class CustomerIntegrationTest {
                 email
         );
 
+        // Confirm that customer 1 exists
         assertThat(allCustomers).contains(expectedCustomer);
-        System.out.println("Asserted expected customer");
 
         webTestClient.delete()
                 .uri(CUSTOM_URI + "/{id}", id)
@@ -169,6 +189,8 @@ public class CustomerIntegrationTest {
                 .exchange()
                 .expectStatus()
                 .isOk();
+
+        System.out.println("Delete customer 1 successfully...");
 
         webTestClient.get()
                 .uri(CUSTOM_URI + "/{id}", id)
@@ -237,7 +259,7 @@ public class CustomerIntegrationTest {
         assertThat(allCustomers).contains(expectedCustomer);
 
 
-        // Make update to the customer with the id
+        // Make update to the customer with the id (name and password ONLY)
         CustomerRegistrationRequest updateRequest = new CustomerRegistrationRequest(
                 "koko", null, "newPassword", null, gender
         );
