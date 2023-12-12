@@ -231,6 +231,18 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.2.4</version>
+				<configuration>
+					<user>koko</user>
+					<password>password</password>
+					<url>jdbc:postgresql://localhost:5433/customer</url>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
