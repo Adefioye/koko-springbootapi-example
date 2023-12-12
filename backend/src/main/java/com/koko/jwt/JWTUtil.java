@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.sql.Date;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -22,6 +23,9 @@ public class JWTUtil {
         return issueToken(subject, Map.of("scopes", scopes));
     }
 
+    public String issueToken(String subject, List<String> scopes) {
+        return issueToken(subject, Map.of("scope", scopes));
+    };
     public String issueToken(
          String subject,
          Map<String, Object> claims) {
@@ -68,4 +72,6 @@ public class JWTUtil {
         java.util.Date today = Date.from(Instant.now());
         return getClaims(jwt).getExpiration().before(today);
     }
+
+
 }
