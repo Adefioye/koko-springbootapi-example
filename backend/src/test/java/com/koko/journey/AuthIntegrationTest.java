@@ -58,13 +58,13 @@ public class AuthIntegrationTest {
 
         // Authenticating with non-registered customer
         webTestClient.post()
-                .uri(AUTH_URI)
+                .uri(AUTH_URI + "/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(authRequest), AuthRequest.class)
                 .exchange()
                 .expectStatus()
-                .isForbidden();
+                .isUnauthorized();
 
         // Register a customer
         webTestClient.post()
