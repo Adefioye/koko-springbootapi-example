@@ -7,16 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { deleteCustomer } from "@/services/clients";
 import { AxiosError } from "axios";
-import { toast } from "./ui/use-toast";
-import { CustomerProps } from "@/types";
+import { toast } from "../ui/use-toast";
+import { Customer } from "./../../../types";
 
 interface Props {
   openDialog: boolean;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  customer: CustomerProps;
+  customer: Customer;
   fetchCustomers: () => void;
 }
 

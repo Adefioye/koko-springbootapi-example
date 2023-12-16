@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<string | null>(null);
 
   const setUserFromToken = () => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem(ACCESS_TOKEN);
     if (token) {
       const decoded = jwtDecode(token);
       console.log(decoded);

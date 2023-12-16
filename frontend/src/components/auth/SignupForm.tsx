@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   FormField,
   FormItem,
@@ -10,11 +10,11 @@ import {
   FormControl,
   FormMessage,
   Form,
-} from "./ui/form";
-import { Input } from "./ui/input";
-import { toast } from "./ui/use-toast";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { genderProps } from "./../../types";
+import { genderProps } from "../../../types";
 import { saveCustomer } from "@/services/clients";
 import {
   Select,
@@ -22,8 +22,9 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "./ui/select";
+} from "../ui/select";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(5).max(30),
@@ -77,6 +78,10 @@ const SignupForm = () => {
       }
     }
   }
+
+  useEffect(() => {
+    form.reset();
+  }, [form, form.formState.isSubmitted]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-white bg-slate-600">
@@ -198,7 +203,7 @@ const SignupForm = () => {
                 onClick={() => {}}
                 className="w-full"
               >
-                Sign in
+                Sign up
               </Button>
             </div>
           </form>

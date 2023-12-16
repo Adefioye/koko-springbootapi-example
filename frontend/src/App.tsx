@@ -1,4 +1,4 @@
-import ImageGallery from "./components/ImageGallery";
+import ImageGallery from "./components/customer/CustomerImageGallery";
 import { useEffect, useState } from "react";
 import { Customer } from "./../types";
 import { getCustomers } from "./services/clients";
@@ -10,14 +10,14 @@ function App() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openCustomerForm, setOpenCustomerForm] = useState(false);
-  const [updateCustomer, setUpdateCustomer] = useState<
-    Customer | undefined
-  >(undefined);
+  const [updateCustomer, setUpdateCustomer] = useState<Customer | undefined>(
+    undefined
+  );
   const [error, setError] = useState("");
 
   async function fetchCustomers() {
     setIsLoading(true);
-    console.log()
+    console.log();
     try {
       const results = await getCustomers();
       setCustomers(results.data);

@@ -1,11 +1,11 @@
-import { CustomerProps } from "../../types";
-import Card from "./Card";
+import { Customer } from "../../../types";
+import Card from "./CustomerCard";
 
 interface Props {
-  customers: CustomerProps[];
+  customers: Customer[];
   fetchCustomers: () => void;
   setUpdateCustomer: React.Dispatch<
-    React.SetStateAction<CustomerProps | undefined>
+    React.SetStateAction<Customer | undefined>
   >;
   setOpenCustomerForm: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -1,12 +1,10 @@
-import { Customer } from "./../../types";
-import { Button } from "./ui/button";
+import { Customer } from "../../../types";
+import { Button } from "../ui/button";
 
 interface Props {
   open?: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setUpdateCustomer: React.Dispatch<
-    React.SetStateAction<Customer | undefined>
-  >;
+  setUpdateCustomer: React.Dispatch<React.SetStateAction<Customer | undefined>>;
 }
 
 const AddCustomerButton = ({ setOpen, setUpdateCustomer }: Props) => {

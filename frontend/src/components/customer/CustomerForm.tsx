@@ -1,12 +1,12 @@
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "./ui/sheet";
-import { Input } from "./ui/input";
+} from "../ui/sheet";
+import { Input } from "../ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import {
   Form,
   FormLabel,
   FormControl,
-} from "./ui/form";
+} from "../ui/form";
 
 import {
   Select,
@@ -28,14 +28,14 @@ import {
   SelectValue,
   SelectItem,
   SelectContent,
-} from "./ui/select";
+} from "../ui/select";
 import {
   saveCustomer,
   updateCustomer as updateCustomerDetails,
 } from "@/services/clients";
 import { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { Customer, genderProps } from "../../types";
+import { Customer, genderProps } from "../../../types";
 
 interface Props {
   open: boolean;

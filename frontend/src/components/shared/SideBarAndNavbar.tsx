@@ -1,8 +1,8 @@
 import Navbar from "./Navbar";
 import LeftSideBar from "./LeftSideBar";
-import AddCustomerButton from "../AddCustomerButton";
+import AddCustomerButton from "../customer/AddCustomerButton";
 import { ReactNode } from "react";
-import CustomerForm from "../CustomerForm";
+import CustomerForm from "../customer/CustomerForm";
 import { Customer } from "../../../types";
 
 interface Props {
@@ -11,9 +11,7 @@ interface Props {
   children: ReactNode;
   fetchCustomers: () => void;
   updateCustomer: Customer | undefined;
-  setUpdateCustomer: React.Dispatch<
-    React.SetStateAction<Customer | undefined>
-  >;
+  setUpdateCustomer: React.Dispatch<React.SetStateAction<Customer | undefined>>;
 }
 
 const SideBarAndNavbar = ({

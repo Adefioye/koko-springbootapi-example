@@ -1,14 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CustomerProps } from "../../types";
-import { Button } from "./ui/button";
+import { Customer } from "../../../types";
+import { Button } from "../ui/button";
 import DeleteCustomerDialog from "./DeleteCustomerDialog";
 import { useState } from "react";
 
 interface Props {
-  customer: CustomerProps;
+  customer: Customer;
   fetchCustomers: () => void;
   setUpdateCustomer: React.Dispatch<
-    React.SetStateAction<CustomerProps | undefined>
+    React.SetStateAction<Customer | undefined>
   >;
   setOpenCustomerForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -23,7 +23,7 @@ const Card = ({
 
   const randomUserGenerator = customer.gender === "MALE" ? "men" : "women";
 
-  function handleCustomerUpdate(customer: CustomerProps): void {
+  function handleCustomerUpdate(customer: Customer): void {
     // Set local customer state and populate form with that information
     setUpdateCustomer(customer);
     setOpenCustomerForm(true);
