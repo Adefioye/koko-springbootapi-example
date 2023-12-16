@@ -1,17 +1,17 @@
 import ImageGallery from "./components/ImageGallery";
 import { useEffect, useState } from "react";
-import { CustomerProps } from "./../types";
+import { Customer } from "./../types";
 import { getCustomers } from "./services/clients";
 import SideBarAndNavbar from "./components/shared/SideBarAndNavbar";
 import { toast } from "./components/ui/use-toast";
 import { AxiosError } from "axios";
 
 function App() {
-  const [customers, setCustomers] = useState<CustomerProps[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openCustomerForm, setOpenCustomerForm] = useState(false);
   const [updateCustomer, setUpdateCustomer] = useState<
-    CustomerProps | undefined
+    Customer | undefined
   >(undefined);
   const [error, setError] = useState("");
 

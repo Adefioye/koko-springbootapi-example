@@ -11,6 +11,10 @@ import {
 import { Input } from "./ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAuth } from "@/context/AuthContext";
+import { AxiosError } from "axios";
+import { toast } from "./ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   username: z.string().min(5).max(30),
@@ -23,10 +27,12 @@ const formSchema = z.object({
       new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
       "Require 1 special character"
     )
-    .min(8, "Must be at least 8 characters in length"),
+    .min(8, "Require at least 8 characters"),
 });
 
-const Login = () => {
+const LoginForm = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "onBlur",
     resolver: zodResolver(formSchema),
@@ -36,9 +42,22 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await login(values);
+      navigate("/dashboard");
+      console.log("Successfully logged in");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          variant: "destructive",
+          title: `${error.code}`,
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    }
   }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-white bg-slate-600">
       <div className="w-3/5 shadow-2xl rounded-2xl bg-slate-500 p-10 md:w-2/5">
@@ -84,7 +103,7 @@ const Login = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-center" />
+                    <FormMessage className="text-left" />
                   </FormItem>
                 )}
               />
@@ -107,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;

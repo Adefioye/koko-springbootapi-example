@@ -4,12 +4,13 @@ import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Toaster } from "./components/ui/toaster.tsx";
-import Login from "./components/Login.tsx";
+import LoginForm from "./components/Login.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <LoginForm />,
   },
   {
     path: "/dashboard",
@@ -19,7 +20,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    <Toaster />
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster />
+    </AuthProvider>
   </React.StrictMode>
 );
