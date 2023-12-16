@@ -15,9 +15,11 @@ import { useAuth } from "@/context/AuthContext";
 import { AxiosError } from "axios";
 import { toast } from "./ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const formSchema = z.object({
-  username: z.string().min(5).max(30),
+  username: z.string().email(),
   password: z
     .string()
     .regex(new RegExp(".*[A-Z].*"), "Require 1 uppercase character")
@@ -58,10 +60,14 @@ const LoginForm = () => {
     }
   }
 
+  useEffect(() => {
+    form.reset();
+  }, [form, form.formState.isSubmitted]);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-white bg-slate-600">
-      <div className="w-3/5 shadow-2xl rounded-2xl bg-slate-500 p-10 md:w-2/5">
-        <p className="font-semibold text-lg mb-3 text-center">
+      <div className="w-3/5 shadow-2xl rounded-2xl space-y-5 bg-slate-500 p-10 md:w-2/5">
+        <p className="font-semibold text-lg text-center">
           Sign in to your account
         </p>
         <Form {...form}>
@@ -110,10 +116,8 @@ const LoginForm = () => {
               <Button
                 type="submit"
                 disabled={
-                  !(form.formState.isValid && form.formState.isDirty) ||
-                  form.formState.isSubmitting
+                  !form.formState.isValid || form.formState.isSubmitting
                 }
-                onClick={() => {}}
                 className="w-full"
               >
                 Sign in
@@ -121,6 +125,10 @@ const LoginForm = () => {
             </div>
           </form>
         </Form>
+        <Link className="mt-8 block text-center" to="/signup">
+          Don't have an account?{" "}
+          <span className="cursor-pointer font-bold">Signup now</span>
+        </Link>
       </div>
     </div>
   );

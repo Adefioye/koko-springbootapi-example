@@ -2,10 +2,11 @@ export interface Customer {
   id?: number;
   name: string;
   email: string;
+  password?: string;
   age: number;
   gender: string;
-  roles: string[];
-  username: string;
+  roles?: string[];
+  username?: string;
 }
 
 export interface UserNameAndPassword {
@@ -29,8 +30,11 @@ export interface AuthResponse {
 }
 
 export interface AuthContextType {
-  user: Customer | null;
-  login: (credentials: UserNameAndPassword) => Promise<AuthResponse> | Promise<unknown>;
+  user: string | null;
+  login: (
+    credentials: UserNameAndPassword
+  ) => Promise<AuthResponse> | Promise<unknown>;
   logout: () => void;
   isAuthenticated?: boolean;
+  setUserFromToken: () => void;
 }

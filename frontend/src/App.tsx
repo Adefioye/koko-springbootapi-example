@@ -17,6 +17,7 @@ function App() {
 
   async function fetchCustomers() {
     setIsLoading(true);
+    console.log()
     try {
       const results = await getCustomers();
       setCustomers(results.data);

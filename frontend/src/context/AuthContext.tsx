@@ -1,13 +1,32 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
-import { AuthContextType, Customer, UserNameAndPassword } from "types";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { AuthContextType, UserNameAndPassword } from "types";
 import { login as performLogin } from "@/services/clients";
+import { jwtDecode } from "jwt-decode";
 
 export const ACCESS_TOKEN = "access_token";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState<Customer | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+
+  const setUserFromToken = () => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      setUser(decoded.sub ?? "");
+    }
+  };
+  useEffect(() => {
+    setUserFromToken();
+  }, []);
 
   const login = async (credentials: UserNameAndPassword) => {
     return new Promise((resolve, reject) => {
@@ -15,7 +34,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         .then((res) => {
           const jwtToken = res.headers["authorization"];
           localStorage.setItem(ACCESS_TOKEN, jwtToken);
-          // TODO set User
           setUser({ ...res.data.customerDTO });
           resolve(res);
         })
@@ -26,14 +44,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const logout = () => {
-    localStorage.removeItem(ACCESS_TOKEN)
-    setUser(null)
-  }
+    localStorage.removeItem(ACCESS_TOKEN);
+    setUser(null);
+  };
 
-  const isAuthenticated = localStorage.getItem(ACCESS_TOKEN) ? true : false
+  const isAuthenticated = localStorage.getItem(ACCESS_TOKEN) ? true : false;
 
-  const value = { user, login, logout, isAuthenticated };
-
+  const value = { user, login, logout, isAuthenticated, setUserFromToken };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

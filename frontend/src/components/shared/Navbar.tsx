@@ -12,13 +12,12 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    console.log("Isauthenticated: ", isAuthenticated)
     if (!isAuthenticated) navigate("/");
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="w-full p-5 shadow-md sticky ml-[15rem]">
-      <Button onClick={handleLogout} className="">
+    <div className="p-5 shadow-md sticky flex justify-end ml-[15rem]">
+      <Button onClick={handleLogout}>
         {isAuthenticated ? "Sign out" : "Sign in"}
       </Button>
     </div>

@@ -35,18 +35,28 @@ import {
 } from "@/services/clients";
 import { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { CustomerProps, genderProps } from "../../types";
+import { Customer, genderProps } from "../../types";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   fetchCustomers: () => void;
-  updateCustomer: CustomerProps | undefined;
+  updateCustomer: Customer | undefined;
 }
 
 const formSchema = z.object({
   name: z.string().min(5).max(30),
   email: z.string().email(),
+  password: z
+    .string()
+    .regex(new RegExp(".*[A-Z].*"), "Require 1 uppercase character")
+    .regex(new RegExp(".*[a-z].*"), "Require 1 lowercase character")
+    .regex(new RegExp(".*\\d.*"), "Require 1 number")
+    .regex(
+      new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+      "Require 1 special character"
+    )
+    .min(8, "Require at least 8 characters"),
   age: z.coerce.number().min(16).max(100),
   gender: z.nativeEnum(genderProps),
 });
@@ -62,6 +72,7 @@ const CustomerForm = ({
   const initialFormValues = {
     name: updateCustomer?.name ?? "",
     email: updateCustomer?.email ?? "",
+    password: updateCustomer?.password ?? "",
     age: updateCustomer?.age ?? 5,
     gender: (updateCustomer?.gender as genderProps) ?? genderProps.MALE,
   };
