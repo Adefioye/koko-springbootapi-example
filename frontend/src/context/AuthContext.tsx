@@ -25,7 +25,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const value = { user, login };
+  const logout = () => {
+    localStorage.removeItem(ACCESS_TOKEN)
+    setUser(null)
+  }
+
+  const isAuthenticated = localStorage.getItem(ACCESS_TOKEN) ? true : false
+
+  const value = { user, login, logout, isAuthenticated };
+
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

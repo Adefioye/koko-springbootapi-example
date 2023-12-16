@@ -3,16 +3,16 @@ import LeftSideBar from "./LeftSideBar";
 import AddCustomerButton from "../AddCustomerButton";
 import { ReactNode } from "react";
 import CustomerForm from "../CustomerForm";
-import { CustomerProps } from "../../../types";
+import { Customer } from "../../../types";
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: ReactNode;
   fetchCustomers: () => void;
-  updateCustomer: CustomerProps | undefined;
+  updateCustomer: Customer | undefined;
   setUpdateCustomer: React.Dispatch<
-    React.SetStateAction<CustomerProps | undefined>
+    React.SetStateAction<Customer | undefined>
   >;
 }
 
