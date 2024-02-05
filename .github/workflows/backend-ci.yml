@@ -1,11 +1,12 @@
-name: CI - Build Backend
+name: Testing CI build
 
 on:
-  pull_request:
+  workflow_dispatch:
+  push:
     branches:
-      - main
+      - test-ci
     paths:
-      - 'backend/**'
+      - backend/**
 
 jobs:
   build:
