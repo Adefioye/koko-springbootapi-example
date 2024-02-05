@@ -13,7 +13,8 @@ import java.util.Random;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-    // Application context
+        // Application context
+        // Get bean definitions
     }
 
     @Bean
