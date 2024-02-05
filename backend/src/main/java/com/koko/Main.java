@@ -40,6 +40,26 @@ public class Main {
 
     }
 
+
+//    @GetMapping("/greet")
+//    public GreetResponse greet(
+//            @RequestParam(value = "name", required = false) String name) {
+//
+//        String greeting = name == null || name.isBlank() ? "Hello" : "Hello " + name;
+//        return new GreetResponse(
+//                greeting,
+//                List.of("Java", "Javascript", "Python"),
+//                new Person("Koko", 30, 30000)
+//        );
+//    }
+//
+//    record Person(String name, int age, double savings) {};
+//
+//    record GreetResponse(
+//            String greeting,
+//            List<String> favProgLanguages,
+//            Person person
+//    ) {}
 }
 
 
